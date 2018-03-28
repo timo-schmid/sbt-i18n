@@ -30,7 +30,7 @@ object I18nPlugin extends AutoPlugin {
     i18nDirectory := baseDirectory.value / "src/main/i18n",
     i18nPackageName := "i18n",
     generateI18n := {
-      genI18n(i18nDirectory.value, sourceManaged.value, i18nPackageName.value)
+      genI18n(i18nDirectory.value, sourceManaged.value / "main", i18nPackageName.value)
     },
     sourceGenerators in Compile += generateI18n.taskValue
   )
