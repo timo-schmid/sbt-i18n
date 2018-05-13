@@ -1,6 +1,7 @@
-package ch.timo_schmid.sbt.i18n.ops
+package ch.timo_schmid.i18n.ops
 
-import ch.timo_schmid.sbt.i18n.data._
+import ch.timo_schmid.i18n.data
+import ch.timo_schmid.i18n.data.{TranslationNode, TranslationSet, TranslationString}
 
 class TranslationSetOps(set: TranslationSet) {
 
@@ -14,21 +15,27 @@ class TranslationSetOps(set: TranslationSet) {
     rootNodes()
 
   def append(translationString: TranslationString): TranslationSet =
-    TranslationSet(set.strings :+ translationString)
+    data.TranslationSet(set.strings :+ translationString)
 
   def merge(other: TranslationSet): TranslationSet =
     TranslationSet(set.strings ++ other.strings)
 
+  private def rootKeys: Seq[String] =
+    byKey.map { case (key, _) =>
+      if(key.contains('.'))
+        key.split('.').head
+      else
+        key
+    }.toSeq.distinct
+
   private def rootNodes(): Seq[TranslationNode] =
-    byKey.filter { case (key, _) =>
-      !key.contains(".")
-    }.map { case (key, strings) =>
-      TranslationNode(key, strings, childNodes(key))
-    }.toSeq
+    rootKeys.map { key =>
+      data.TranslationNode(key, byKey.getOrElse(key, Nil), childNodes(key))
+    }
 
   private def childNodes(prefix: String): Seq[TranslationNode] =
     childKeys(prefix).map { key =>
-      TranslationNode(key, byKey.getOrElse(key, Nil), childNodes(key))
+      data.TranslationNode(key, byKey.getOrElse(key, Nil), childNodes(key))
     }
 
   private def childKeys(prefix: String): List[String] =

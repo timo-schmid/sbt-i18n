@@ -1,4 +1,4 @@
-package ch.timo_schmid.sbt.i18n.data
+package ch.timo_schmid.i18n.data
 
 sealed trait TranslationStringPart
 final case class Literal(text: String) extends TranslationStringPart

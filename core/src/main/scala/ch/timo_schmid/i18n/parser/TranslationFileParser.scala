@@ -1,11 +1,13 @@
-package ch.timo_schmid.sbt.i18n.parser
+package ch.timo_schmid.i18n.parser
 
-import atto._
-import Atto._
-import atto.compat.stdlib._
-import ch.timo_schmid.sbt.i18n.data._
-import ch.timo_schmid.sbt.i18n.ops._
 import java.io.File
+
+import atto.Atto._
+import atto._
+import atto.compat.stdlib._
+import ch.timo_schmid.i18n.data._
+import ch.timo_schmid.i18n.ops._
+
 import scala.io.Source
 
 class TranslationFileParser(onWeirdFileName: String => String) {

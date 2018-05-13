@@ -1,11 +1,12 @@
-package ch.timo_schmid.sbt.i18n
+package ch.timo_schmid.sbt_i18n
 
-import ch.timo_schmid.sbt.i18n.data._
-import ch.timo_schmid.sbt.i18n.ops._
-import ch.timo_schmid.sbt.i18n.parser.TranslationFileParser
-import ch.timo_schmid.sbt.i18n.writer.TranslationFileWriter
+import ch.timo_schmid.i18n.data.{TranslationNode, TranslationSet}
+import ch.timo_schmid.i18n.ops._
+import ch.timo_schmid.i18n.parser.TranslationFileParser
+import ch.timo_schmid.sbt_i18n.writer.TranslationFileWriter
+import org.portablescala.sbtplatformdeps.PlatformDepsPlugin
+import sbt.Keys.{baseDirectory, crossVersion, sourceGenerators, sourceManaged}
 import sbt._
-import sbt.Keys.{baseDirectory, sourceGenerators, sourceManaged}
 
 import scala.language.implicitConversions
 
@@ -29,30 +30,24 @@ object I18nPlugin extends AutoPlugin {
   override def projectSettings: Seq[Def.Setting[_]] = Seq(
     i18nDirectory := baseDirectory.value / "src/main/i18n",
     i18nPackageName := "i18n",
-    generateI18n := {
-      genI18n(i18nDirectory.value, sourceManaged.value / "main", i18nPackageName.value)
-    },
+    generateI18n := genI18n(i18nDirectory.value, sourceManaged.value / "main", i18nPackageName.value),
     sourceGenerators in Compile += generateI18n.taskValue
   )
 
-  def genI18n(i18nDir: File, destDir: File, packageName: String): Seq[File] = {
-    println(i18nDir.getAbsolutePath)
+  def genI18n(i18nDir: File, destDir: File, packageName: String): Seq[File] =
     if (i18nDir.isDirectory)
       genI18n(i18nDir.listFiles().toSeq, destDir, packageName)
     else
       sys.error(s"The directory ${i18nDir.getAbsolutePath} is not a directory")
-  }
 
   private val parser = new TranslationFileParser(onWeirdFileName)
 
   private val writer = new TranslationFileWriter()
 
-  def genI18n(i18nFiles: Seq[File], destDir: File, packageName: String): Seq[File] = {
+  def genI18n(i18nFiles: Seq[File], destDir: File, packageName: String): Seq[File] =
     Seq(
       writeLanguageClass(destDir, packageName)
-    ) ++
-    parseI18nFiles(i18nFiles).asTree.map(writeI18nFile(destDir, packageName))
-  }
+    ) ++ parseI18nFiles(i18nFiles).asTree.map(writeI18nFile(destDir, packageName))
 
   // TODO (timo) There should be an external dependency "sbt-i18n-core" which contains this file.
   // This way, we could use it in the sbt-plugin as well.

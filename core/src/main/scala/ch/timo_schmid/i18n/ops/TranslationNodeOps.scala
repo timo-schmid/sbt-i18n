@@ -1,7 +1,7 @@
-package ch.timo_schmid.sbt.i18n.ops
+package ch.timo_schmid.i18n.ops
 
-import ch.timo_schmid.sbt.i18n.data.TranslationNode
-import ch.timo_schmid.sbt.i18n.StringUtil.indent
+import ch.timo_schmid.i18n.StringUtil.indent
+import ch.timo_schmid.i18n.data.TranslationNode
 
 class TranslationNodeOps(node: TranslationNode) {
 

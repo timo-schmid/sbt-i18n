@@ -1,6 +1,7 @@
-package ch.timo_schmid.sbt.i18n
+package ch.timo_schmid.i18n
 
-private [i18n] object StringUtil {
+// TODO Could probably be private
+object StringUtil {
 
   def indent(spaces: Int)(str: String): String =
     str

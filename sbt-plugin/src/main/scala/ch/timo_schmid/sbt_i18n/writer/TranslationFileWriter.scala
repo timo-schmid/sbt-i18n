@@ -1,10 +1,10 @@
-package ch.timo_schmid.sbt.i18n.writer
+package ch.timo_schmid.sbt_i18n.writer
 
 import java.io.File
 
-import ch.timo_schmid.sbt.i18n.StringUtil.indent
-import ch.timo_schmid.sbt.i18n.data._
-import ch.timo_schmid.sbt.i18n.ops._
+import ch.timo_schmid.i18n.StringUtil.indent
+import ch.timo_schmid.i18n.data._
+import ch.timo_schmid.i18n.ops._
 import sbt.IO
 
 class TranslationFileWriter {
@@ -21,18 +21,23 @@ class TranslationFileWriter {
   }
 
   private def createPackageCode(packageName: String): String =
-    s"package $packageName"
+    s"package $packageName\n"
 
   private def createNodeCode(node: TranslationNode): String =
-    s"""
-       |object ${createObjectName(node)} {
-       |
-       |  def apply(${createObjectParams(node)})(implicit lang: Language): String = lang.code match {
-       |${indent(4)(createMatchCode(node))}
-       |    case _ => "${node.key}"
-       |  }
+    s"""object ${createObjectName(node)} {
+       |${indent(2)(createApplyFunction(node))}
        |${indent(2)(node.childNodes.map(createNodeCode).mkString("\n"))}
-       |}""".stripMargin
+       |}""".stripMargin + "\n"
+
+  private def createApplyFunction(node: TranslationNode): String =
+    if(node.strings.isEmpty)
+      ""
+    else
+      s"""
+         |def apply(${createObjectParams(node)})(implicit lang: Language): String = lang.code match {
+         |${indent(2)(createMatchCode(node))}
+         |  case _ => "${node.key}"
+         |}""".stripMargin + "\n"
 
   private def createObjectName(node: TranslationNode): String =
     node.key.substring(node.key.lastIndexOf(".") + 1)

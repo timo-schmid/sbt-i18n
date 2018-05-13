@@ -1,6 +1,6 @@
-package ch.timo_schmid.sbt.i18n.ops
+package ch.timo_schmid.i18n.ops
 
-import ch.timo_schmid.sbt.i18n.data._
+import ch.timo_schmid.i18n.data._
 
 class TranslationStringOps(s: TranslationString) {
 
