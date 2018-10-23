@@ -8,7 +8,7 @@ import atto.compat.stdlib._
 import ch.timo_schmid.i18n.data._
 import ch.timo_schmid.i18n.ops._
 
-import scala.io.Source
+import scala.io.{Codec, Source}
 
 class TranslationFileParser(onWeirdFileName: String => String) {
 
@@ -76,7 +76,7 @@ class TranslationFileParser(onWeirdFileName: String => String) {
 
   def parseFile(file: File): TranslationSet =
     Source
-      .fromFile(file)
+      .fromFile(file)(Codec.UTF8)
       .getLines()
       .filterNot(_.isEmpty)
       .filterNot(_.startsWith("#"))

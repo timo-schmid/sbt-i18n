@@ -1,4 +1,2 @@
-addSbtPlugin("com.jsuereth" % "sbt-pgp" % "1.1.1")
-
-addSbtPlugin("ch.timo-schmid" % "sbt-i18n" % "0.1.0-SNAPSHOT")
-
+addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.1.0-M4")
+addSbtPlugin("com.geirsson" % "sbt-ci-release" % "1.2.2")
