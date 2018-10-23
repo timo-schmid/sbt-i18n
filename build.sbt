@@ -16,14 +16,14 @@ inThisBuild(
   )
 )
 
-lazy val core = (project in file("core"))
+lazy val `i18n-core` = (project in file("core"))
   .settings(
     name := "i18n-core",
     description := "A typesafe i18n generator",
     libraryDependencies += "org.tpolecat" %% "atto-core" % "0.5.2"
   )
 
-lazy val plugin = (project in file("sbt-plugin"))
+lazy val `sbt-i18n` = (project in file("sbt-plugin"))
   .settings(
     name := "sbt-i18n",
     description := "A typesafe i18n generator for sbt",
@@ -38,5 +38,11 @@ lazy val plugin = (project in file("sbt-plugin"))
     scriptedBufferLog := false
   )
   .enablePlugins(SbtPlugin)
-  .dependsOn(core)
-  .aggregate(core)
+  .dependsOn(`i18n-core`)
+  .aggregate(`i18n-core`)
+
+lazy val `root` = (project in file("."))
+  .settings(
+    skip in publish := true
+  )
+  .aggregate(`sbt-i18n`, `i18n-core`)
