@@ -20,7 +20,10 @@ lazy val `i18n-core` = (project in file("core"))
   .settings(
     name := "i18n-core",
     description := "A typesafe i18n generator",
-    libraryDependencies += "org.tpolecat" %% "atto-core" % "0.5.2"
+    libraryDependencies ++= Seq(
+      "org.tpolecat" %% "atto-core"   % "0.5.2",
+      "org.specs2"   %% "specs2-core" % "3.8.9" % "test"
+    )
   )
 
 lazy val `sbt-i18n` = (project in file("sbt-plugin"))
